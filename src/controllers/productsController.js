@@ -16,8 +16,12 @@ export const getProducts = async (req, res) => {
             number: i + 1,
             isCurrent: i + 1 === products.page
         }))
-        res.status(200).send(products)
+        res.status(200).render('templates/products', {
+            title: "Inicio",
+            prods: products
+        })
     } catch (e) {
+        console.log(e)
         res.status(500).send(e)
     }
 }

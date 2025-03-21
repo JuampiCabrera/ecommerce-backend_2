@@ -3,17 +3,18 @@ import generateToken from "../utils/jwt.js"
 export const register = async (req, res) => {
     try {
         if(!req.user._id)
-            return res.status(400).send("Todos los atributos son necesarios")
-        return res.status(201).send(`Usuario creado correctamente con el id: ${req.user?._id}`)
+            return res.status(400).json({message: "Todos los atributos son necesarios"})
+        return res.status(201).json({message: "Usuario creado correctamente"})
     } catch (e) {
-        res.status(500).send(e)
+        res.status(500).json({message: e})
     }
 }
 
 export const login = async (req, res) => {
     try {
         if(!req.user._id)
-            return res.status(400).send("Usuario o contraseña no son validos")
+            return res.status(400).json({message:"Usuario o contraseña no son validos"})
+
         req.session.user = {
             email: req.user.email,
             first_name: req.user.first_name
@@ -22,9 +23,9 @@ export const login = async (req, res) => {
             httpOnly: true,
             secure: false,
             maxAge: 8640000 
-        }).send("Usuario logeado correctamente")
+        }).json({message:"Usuario logeado correctamente"})
     } catch (e) {
-        req.status(500).send(e)
+        req.status(500).json({message: e})
     }
 }
 
@@ -46,4 +47,20 @@ export const githubLogin = (req, res) => {
     } catch (e) {
         res.status(500).send(e)
     }
+}
+
+export const viewLogin = (req, res) => {
+    res.status(200).render('templates/login', {
+        title: "Inicio de Sesion de Registro de Usuario",
+        url_js: "/js/login.js",
+        url_css: "/css/main.css"
+    })
+}
+
+export const viewRegister = (req, res) => {
+    res.status(200).render('templates/register', {
+        title: "Registro de Usuario",
+        url_js: "/js/register.js",
+        url_css: "/css/main.css"
+    })
 }

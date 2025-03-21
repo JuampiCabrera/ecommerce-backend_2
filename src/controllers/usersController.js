@@ -4,7 +4,7 @@ export const getUsers = async (req, res) => {
 
     try {
         const users = await userModel.find()
-        res.statys(200).send(users)
+        res.status(200).send(users)
     } catch (e) {
         res.status(500).send(e)
     }
